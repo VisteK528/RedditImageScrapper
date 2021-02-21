@@ -3,31 +3,52 @@ import urllib.request
 import time
 import os
 
-allowed = True
+"""
 
-url_main = ['https://oauth.reddit.com/r/PrequelMemes/hot', "https://oauth.reddit.com/r/memes/", 'https://oauth.reddit.com/r/cursedtoilets/',
-            'https://oauth.reddit.com/r/hmmm/', 'https://oauth.reddit.com/r/starwarsmemes/', 'https://oauth.reddit.com/r/cursedimages/']
-myPath = ['C:\\Users\ppato\PycharmProjects\WebScrapping2\PrequelMemes\\', 'C:\\Users\ppato\PycharmProjects\WebScrapping2\Memes\\',
-          'C:\\Users\ppato\PycharmProjects\WebScrapping2\Toilets\\', 'C:\\Users\ppato\PycharmProjects\WebScrapping2\CursedImages\\',
-          'C:\\Users\ppato\PycharmProjects\WebScrapping2\Test\\']
+Web Scrapping API by VisteK528
+©2021
 
-test_path = 'C:\\Users\ppato\PycharmProjects\WebScrapping2\Test\\'
+"""
 
-CLIENT_ID = "0tkz2ASDwHfRHQ"
-SECRET_KEY = "tKeMcBgWf30pTKKg6SkdM3tAhvXAVQ"
+
+"""
+ 
+Insert here your client id and secret key which you can find after API registration 
+with this link https://www.reddit.com/prefs/apps
+
+"""
+
+CLIENT_ID = "YOUR_CLIENT_ID"
+SECRET_KEY = "YOUR_SECRET_KEY"
 
 auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
+
+"""
+
+In my opinion loading password from different file is much more safe,
+but you can write down your password instead of password variable if you want
+
+"""
+
 with open('pw.txt', 'r') as f:
-    pw = f.read()
+    password = f.read()
+
+"""
+
+Here type in your Reddit Username and password which by default will be loaded from pw.txt file, so first go there and
+change default text to your password
+
+"""
 
 data = {
     'grant_type': 'password',
-    'username': 'VisTech528',
-    'password': pw
+    'username': 'USERNAME',
+    'password': password
 }
 
-headers = {'User-Agent': 'Python Reddit Web Scrapper by VisteK528'}
+# Here you should type in name of your API
+headers = {'User-Agent': 'YOUR_API_NAME'}
 
 res = requests.post('https://www.reddit.com/api/v1/access_token', auth=auth, data=data, headers=headers)
 
@@ -37,7 +58,6 @@ headers['Authorization'] = f'bearer {TOKEN}'
 
 req = requests.get("https://oauth.reddit.com/api/v1/me", headers=headers)
 
-#print(soup.prettify())
 
 number = 0
 test_number = 0
@@ -45,7 +65,7 @@ number_allowed = 0
 
 
 
-def find_memes(URL, PATH):
+def find_images(URL, PATH):
     global number, number_allowed, url_main, test_path
 
     # Getting response JSON file from targeted subreddit ( 100 indexes )
@@ -76,9 +96,8 @@ def find_memes(URL, PATH):
                 print(post['data']['secure_media']['reddit_video']['scrubber_media_url'])
             """
             if end == '.jpg' or end == '.png':
-                test_path = 'C:\\Users\ppato\PycharmProjects\WebScrapping2\PrequelMemesSorted\images\\'
                 filename = str(number) + ".png"
-                fullfilename = os.path.join(test_path, filename)
+                fullfilename = os.path.join(PATH, filename)
                 print("PNG")
                 urllib.request.urlretrieve(image_src, fullfilename)
                 after = post['kind'] + '_' + post['data']['id']
@@ -89,9 +108,8 @@ def find_memes(URL, PATH):
                 time.sleep(0.5)
 
             elif end == '.gif':
-                test_path = 'C:\\Users\ppato\PycharmProjects\WebScrapping2\PrequelMemesSorted\gifs\\'
                 filename = str(number) + ".gif"
-                fullfilename = os.path.join(test_path, filename)
+                fullfilename = os.path.join(PATH, filename)
                 print("GIF")
                 urllib.request.urlretrieve(image_src, fullfilename)
                 after = post['kind'] + '_' + post['data']['id']
@@ -108,7 +126,6 @@ def find_memes(URL, PATH):
             """
             """
             else:
-                test_path = 'C:\\Users\ppato\PycharmProjects\WebScrapping2\PrequelMemesSorted\others\\'
                 media_url = post['data']['secure_media']['reddit_video']['fallback_url']
                 print(media_url)
                 #media_url = post['data']['secure_media']['reddit_video']['scrubber_media_url']
@@ -116,7 +133,7 @@ def find_memes(URL, PATH):
 
                 print("Other")
                 rsp = urllib.request.urlopen(media_url)
-                fullfilename = os.path.join(test_path, 'film.mp4')
+                fullfilename = os.path.join(PATH, 'film.mp4')
                 with open(fullfilename, 'wb') as f:
                     f.write(rsp.read())
                 """
@@ -131,7 +148,6 @@ def find_memes(URL, PATH):
                     number_allowed = 0
 
 
-
         req = requests.get(url_main[0], headers=headers, params={'limit': '100', 'after': after})
 
         time.sleep(1)
@@ -140,13 +156,14 @@ def find_memes(URL, PATH):
 
 
 while True:
-    URL = input("Type URL: ")
-    PATH = input("Type PATH: ")
+    URL = input("Subreddit URL: ")
+    PATH = input("Your PATH where images will be stored: ")
 
 
-    find_memes(URL, PATH)
+    find_images(URL, PATH)
 
 
 
-#print(link)
+
+
 
