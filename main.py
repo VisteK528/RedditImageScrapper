@@ -66,12 +66,10 @@ number_allowed = 0
 
 
 def find_images(URL, PATH):
-    global number, number_allowed, url_main, test_path
+    global number, number_allowed
 
     # Getting response JSON file from targeted subreddit ( 100 indexes )
-
-
-
+    req = requests.get(URL, headers=headers, params={'limit': '100'})
 
     # Repeating 20 times whole sequence
     for i in range(20):
@@ -153,16 +151,27 @@ def find_images(URL, PATH):
         time.sleep(1)
 
 
+"""
 
+One important thing, your URL should look like this one:
+https://oauth.reddit.com/r/PrequelMemes/hot
+
+I mean it should contain this: https://oauth.reddit.com and then add rest of your url
+
+e.g.
+You want to use r/memes subreddit?
+Your URL should look like this: https://oauth.reddit.com/r/memes/
+
+Of course you can add at the end of line hot or new keyword and then URL will look like my r/PrequelMemes example
+
+
+"""
 
 while True:
     URL = input("Subreddit URL: ")
     PATH = input("Your PATH where images will be stored: ")
 
-
     find_images(URL, PATH)
-
-
 
 
 
