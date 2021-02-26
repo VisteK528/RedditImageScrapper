@@ -8,10 +8,10 @@ This is simple Reddit API used for image scraping from chosen subreddit
 	
 ## Technologies
 Project is created with:
-*Python 3.8
+* Python 3.8
 
 Libraries:
-*Requests 2.25.1
+* Requests 2.25.1
 
 Default libraries used in this project:
 * urllib
