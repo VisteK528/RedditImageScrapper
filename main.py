@@ -147,7 +147,7 @@ def find_images(URL, PATH):
                 continue
 
 
-        req = requests.get(URL[0], headers=headers, params={'limit': '100', 'after': after})
+        req = requests.get(URL, headers=headers, params={'limit': '100', 'after': after})
 
         time.sleep(0.75)
 
