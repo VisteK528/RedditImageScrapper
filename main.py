@@ -84,71 +84,72 @@ def find_images(URL, PATH):
             except:
                 continue
 
-            # print(image_src)
-            image_src = image_src.replace('amp;s', 's')
-            print(image_src)
-            end = image_src[-4:]
-            print(end)
-            """
-            if end != '.jpg' and end != '.png':
-                print(post['data']['secure_media']['reddit_video']['scrubber_media_url'])
-            """
-            if end == '.jpg' or end == '.png':
-                filename = str(number) + ".png"
-                fullfilename = os.path.join(PATH, filename)
-                print("PNG")
-                urllib.request.urlretrieve(image_src, fullfilename)
-                after = post['kind'] + '_' + post['data']['id']
-                # print(after)
+            try:
+                # print(image_src)
+                image_src = image_src.replace('amp;s', 's')
+                print(image_src)
+                end = image_src[-4:]
+                print(end)
+                if end == '.jpg' or end == '.png':
+                    filename = str(number) + ".png"
+                    fullfilename = os.path.join(PATH, filename)
+                    print("PNG")
+                    urllib.request.urlretrieve(image_src, fullfilename)
+                    after = post['kind'] + '_' + post['data']['id']
+                    # print(after)
 
-                number += 1
-                number_allowed += 1
-                time.sleep(0.5)
+                    number += 1
+                    number_allowed += 1
+                    time.sleep(0.3)
 
-            elif end == '.gif':
-                filename = str(number) + ".gif"
-                fullfilename = os.path.join(PATH, filename)
-                print("GIF")
-                urllib.request.urlretrieve(image_src, fullfilename)
-                after = post['kind'] + '_' + post['data']['id']
-                # print(after)
+                elif end == '.gif':
+                    filename = str(number) + ".gif"
+                    fullfilename = os.path.join(PATH, filename)
+                    print("GIF")
+                    urllib.request.urlretrieve(image_src, fullfilename)
+                    after = post['kind'] + '_' + post['data']['id']
+                    # print(after)
 
-                number += 1
-                number_allowed += 1
-                time.sleep(0.5)
+                    number += 1
+                    number_allowed += 1
+                    time.sleep(0.3)
 
-            """
-
-            Test part of the code with including video download feature, unhappily not working yet
-
-            """
-            """
-            else:
-                media_url = post['data']['secure_media']['reddit_video']['fallback_url']
-                print(media_url)
-                #media_url = post['data']['secure_media']['reddit_video']['scrubber_media_url']
-                after = post['kind'] + '_' + post['data']['id']
-
-                print("Other")
-                rsp = urllib.request.urlopen(media_url)
-                fullfilename = os.path.join(PATH, 'film.mp4')
-                with open(fullfilename, 'wb') as f:
-                    f.write(rsp.read())
                 """
 
-            print(number)
-            if number_allowed >= 60:
-                time1 = time.time()
-                while time.time() - time1 < 15:
-                    print(time.time() - time1)
-                    time.sleep(1)
-                    print("Waiting...")
-                    number_allowed = 0
+                Test part of the code with including video download feature, unhappily not working yet
+
+                """
+                """
+                else:
+                    media_url = post['data']['secure_media']['reddit_video']['fallback_url']
+                    print(media_url)
+                    #media_url = post['data']['secure_media']['reddit_video']['scrubber_media_url']
+                    after = post['kind'] + '_' + post['data']['id']
+
+                    print("Other")
+                    rsp = urllib.request.urlopen(media_url)
+                    fullfilename = os.path.join(PATH, 'film.mp4')
+                    with open(fullfilename, 'wb') as f:
+                        f.write(rsp.read())
+                    """
+
+                print(number)
+                if number_allowed >= 60:
+                    time1 = time.time()
+                    while time.time() - time1 < 15:
+                        print(time.time() - time1)
+                        time.sleep(1)
+                        print("Waiting...")
+                        number_allowed = 0
+
+            except Exception as e:
+                print(e)
+                continue
 
 
-        req = requests.get(URL, headers=headers, params={'limit': '100', 'after': after})
+        req = requests.get(URL[0], headers=headers, params={'limit': '100', 'after': after})
 
-        time.sleep(1)
+        time.sleep(0.75)
 
 
 """
